@@ -14,72 +14,11 @@
 // * Redistributions of source code must retain the above copyright notice.
 //
 /* -------------------------------------------------------------------------------- */
-/* -- REVISION HISTORY                                                           -- */
-/* -------------------------------------------------------------------------------- */
-//  Mar 18, 2015  V0.3  Driver support added.
-//                      Window and object support added.
-//                      Touch support added.
-//                      Fixed some minor bugs.
-//
-//  Oct 20, 2014  V0.2  Function UG_DrawRoundFrame() added.
-//                      Function UG_FillRoundFrame() added.
-//                      Function UG_DrawArc() added.
-//                      Fixed some minor bugs.
-//
-//  Oct 11, 2014  V0.1  First release.
-/* -------------------------------------------------------------------------------- */
-#include "system.h"
-
 #ifndef __UGUI_H
 #define __UGUI_H
 
-
-/* -------------------------------------------------------------------------------- */
-/* -- CONFIG SECTION                                                             -- */
-/* -------------------------------------------------------------------------------- */
-
-/* Enable needed fonts here */
-//#define  USE_FONT_4X6
-//#define  USE_FONT_5X8
-//#define  USE_FONT_5X12
-#define  USE_FONT_6X8
-//#define  USE_FONT_6X10
-#define  USE_FONT_7X12
-#define  USE_FONT_8X8
-#define  USE_FONT_8X12
-#define  USE_FONT_8X14
-#define  USE_FONT_10X16
-#define  USE_FONT_12X16
-#define  USE_FONT_12X20
-#define  USE_FONT_16X26
-#define  USE_FONT_22X36
-#define  USE_FONT_24X40
-//#define  USE_FONT_32X53
-
-/* Specify platform-dependent integer types here */
-
-#define __UG_CONST   const
-typedef uint8_t      UG_U8;
-typedef int8_t       UG_S8;
-typedef uint16_t     UG_U16;
-typedef int16_t      UG_S16;
-typedef uint32_t     UG_U32;
-typedef int32_t      UG_S32;
-
-
-/* Example for dsPIC33
-typedef unsigned char         UG_U8;
-typedef signed char           UG_S8;
-typedef unsigned int          UG_U16;
-typedef signed int            UG_S16;
-typedef unsigned long int     UG_U32;
-typedef signed long int       UG_S32;
-*/
-
-/* -------------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------------- */
-
-
+#include "system.h"
+#include "ugui_config.h"
 
 
 /* -------------------------------------------------------------------------------- */
