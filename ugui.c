@@ -5220,6 +5220,20 @@ void _UG_DrawObjectFrame( UG_S16 xs, UG_S16 ys, UG_S16 xe, UG_S16 ye, UG_COLOR* 
    UG_DrawLine(xe-2, ys+2, xe-2, ye-3, *p);
 }
 
+#ifdef USE_PRERENDER_EVENT
+void _UG_SendObjectPrerenderEvent(UG_WINDOW *wnd,UG_OBJECT *obj)
+{
+	UG_MESSAGE msg;
+	msg.event = OBJ_EVENT_PRERENDER;
+	msg.type = MSG_TYPE_OBJECT;
+	msg.id = obj->type;
+	msg.sub_id = obj->id;
+	msg.src = obj;
+
+	wnd->cb(&msg);
+}
+#endif
+
 /* -------------------------------------------------------------------------------- */
 /* -- DRIVER FUNCTIONS                                                           -- */
 /* -------------------------------------------------------------------------------- */
@@ -6479,6 +6493,9 @@ void _UG_ButtonUpdate(UG_WINDOW* wnd, UG_OBJECT* obj)
             obj->a_abs.ye = obj->a_rel.ye + a.ys;
             if ( obj->a_abs.ye >= wnd->ye ) return;
             if ( obj->a_abs.xe >= wnd->xe ) return;
+#ifdef USE_PRERENDER_EVENT
+            _UG_SendObjectPrerenderEvent(wnd, obj);
+#endif
 
             /* 3D or 2D style? */
             d = ( btn->style & BTN_STYLE_3D )? 3:1;
@@ -6851,6 +6868,9 @@ void _UG_TextboxUpdate(UG_WINDOW* wnd, UG_OBJECT* obj)
             obj->a_abs.ye = obj->a_rel.ye + a.ys;
             if ( obj->a_abs.ye >= wnd->ye ) return;
             if ( obj->a_abs.xe >= wnd->xe ) return;
+#ifdef USE_PRERENDER_EVENT
+            _UG_SendObjectPrerenderEvent(wnd, obj);
+#endif
 
             txt.bc = txb->bc;
             txt.fc = txb->fc;

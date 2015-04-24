@@ -246,6 +246,9 @@ struct S_OBJECT
 /* Standard object events */
 #define OBJ_EVENT_NONE                                0
 #define OBJ_EVENT_CLICKED                             1
+#ifdef USE_PRERENDER_EVENT
+#define OBJ_EVENT_PRERENDER                           2
+#endif
 
 /* Object states */
 #define OBJ_STATE_FREE                                (1<<0)
