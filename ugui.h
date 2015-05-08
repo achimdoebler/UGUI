@@ -25,11 +25,21 @@
 /* -- µGUI FONTS                                                                 -- */
 /* -- Source: http://www.mikrocontroller.net/user/show/benedikt                  -- */
 /* -------------------------------------------------------------------------------- */
+typedef enum
+{
+	FONT_TYPE_1BPP,
+	FONT_TYPE_8BPP
+} FONT_TYPE;
+
 typedef struct
 {
    unsigned char* p;
+   FONT_TYPE font_type;
    UG_S16 char_width;
    UG_S16 char_height;
+   UG_U16 start_char;
+   UG_U16 end_char;
+   UG_U8  *widths;
 } UG_FONT;
 
 #ifdef USE_FONT_4X6
@@ -249,6 +259,12 @@ struct S_OBJECT
 #ifdef USE_PRERENDER_EVENT
 #define OBJ_EVENT_PRERENDER                           2
 #endif
+#ifdef USE_POSTRENDER_EVENT
+#define OBJ_EVENT_POSTRENDER                          3
+#endif
+#define OBJ_EVENT_PRESSED                             4
+#define OBJ_EVENT_RELEASED                            5
+
 
 /* Object states */
 #define OBJ_STATE_FREE                                (1<<0)
@@ -335,6 +351,9 @@ typedef struct
    UG_COLOR afc;
    UG_COLOR abc;
    const UG_FONT* font;
+   UG_U8 align;
+   UG_S8 h_space;
+   UG_S8 v_space;
    char* str;
 }UG_BUTTON;
 
@@ -370,6 +389,8 @@ typedef struct
 #define BTN_STYLE_3D                                  (1<<0)
 #define BTN_STYLE_TOGGLE_COLORS                       (1<<1)
 #define BTN_STYLE_USE_ALTERNATE_COLORS                (1<<2)
+#define BTN_STYLE_NO_BORDERS                          (1<<3)
+#define BTN_STYLE_NO_FILL                             (1<<4)
 
 /* Button events */
 #define BTN_EVENT_CLICKED                             OBJ_EVENT_CLICKED
@@ -460,9 +481,10 @@ typedef struct
 #define DRIVER_ENABLED                                (1<<1)
 
 /* Supported drivers */
-#define NUMBER_OF_DRIVERS                             2
+#define NUMBER_OF_DRIVERS                             3
 #define DRIVER_DRAW_LINE                              0
 #define DRIVER_FILL_FRAME                             1
+#define DRIVER_FILL_AREA                              2
 
 /* -------------------------------------------------------------------------------- */
 /* -- µGUI CORE STRUCTURE                                                        -- */
@@ -487,14 +509,9 @@ typedef struct
       UG_COLOR fore_color;
       UG_COLOR back_color;
    } console;
-   struct
-   {
-      unsigned char* p;
-      UG_S16 char_width;
-      UG_S16 char_height;
-      UG_S8 char_h_space;
-      UG_S8 char_v_space;
-   } font;
+   UG_FONT font;
+   UG_S8 char_h_space;
+   UG_S8 char_v_space;
    UG_COLOR fore_color;
    UG_COLOR back_color;
    UG_COLOR desktop_color;
@@ -749,6 +766,9 @@ UG_RESULT UG_ButtonSetAlternateBackColor( UG_WINDOW* wnd, UG_U8 id, UG_COLOR abc
 UG_RESULT UG_ButtonSetText( UG_WINDOW* wnd, UG_U8 id, char* str );
 UG_RESULT UG_ButtonSetFont( UG_WINDOW* wnd, UG_U8 id, const UG_FONT* font );
 UG_RESULT UG_ButtonSetStyle( UG_WINDOW* wnd, UG_U8 id, UG_U8 style );
+UG_RESULT UG_ButtonSetHSpace( UG_WINDOW* wnd, UG_U8 id, UG_S8 hs );
+UG_RESULT UG_ButtonSetVSpace( UG_WINDOW* wnd, UG_U8 id, UG_S8 vs );
+UG_RESULT UG_ButtonSetAlignment( UG_WINDOW* wnd, UG_U8 id, UG_U8 align );
 UG_COLOR UG_ButtonGetForeColor( UG_WINDOW* wnd, UG_U8 id );
 UG_COLOR UG_ButtonGetBackColor( UG_WINDOW* wnd, UG_U8 id );
 UG_COLOR UG_ButtonGetAlternateForeColor( UG_WINDOW* wnd, UG_U8 id );
@@ -756,6 +776,9 @@ UG_COLOR UG_ButtonGetAlternateBackColor( UG_WINDOW* wnd, UG_U8 id );
 char* UG_ButtonGetText( UG_WINDOW* wnd, UG_U8 id );
 UG_FONT* UG_ButtonGetFont( UG_WINDOW* wnd, UG_U8 id );
 UG_U8 UG_ButtonGetStyle( UG_WINDOW* wnd, UG_U8 id );
+UG_S8 UG_ButtonGetHSpace( UG_WINDOW* wnd, UG_U8 id );
+UG_S8 UG_ButtonGetVSpace( UG_WINDOW* wnd, UG_U8 id );
+UG_U8 UG_ButtonGetAlignment( UG_WINDOW* wnd, UG_U8 id );
 
 /* Textbox functions */
 UG_RESULT UG_TextboxCreate( UG_WINDOW* wnd, UG_TEXTBOX* txb, UG_U8 id, UG_S16 xs, UG_S16 ys, UG_S16 xe, UG_S16 ye );
