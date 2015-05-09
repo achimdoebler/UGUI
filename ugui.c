@@ -4883,7 +4883,6 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
 	      index = (bt - font->start_char)* font->char_height * bn;
 		  for( j=0;j<font->char_height;j++ )
 		  {
-			 xo = x;
 			 c=actual_char_width;
 			 for( i=0;i<bn;i++ )
 			 {
@@ -4899,19 +4898,16 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
 					  push_pixel(bc);
 				   }
 				   b >>= 1;
-				   xo++;
 				   c--;
 				}
 			 }
 	 	 }
-		 yo++;
 	  }
 	  else if (font->font_type == FONT_TYPE_8BPP)
 	  {
 		   index = (bt - font->start_char)* font->char_height * font->char_width;
 		   for( j=0;j<font->char_height;j++ )
 		   {
-			  xo = x;
 			  for( i=0;i<actual_char_width;i++ )
 			  {
 				 b = font->p[index++];
@@ -4919,42 +4915,62 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
 				         (((fc & 0xFF00) * b + (bc & 0xFF00) * (256 - b)) >> 8)  & 0xFF00|//Green component
 				         (((fc & 0xFF0000) * b + (bc & 0xFF0000) * (256 - b)) >> 8) & 0xFF0000; //Red component
 				 push_pixel(color);
-				 xo++;
 			  }
 			  index += font->char_width - actual_char_width;
 		  }
-		  yo++;
 	  }
    }
    else
    {
 	   /*Not accelerated output*/
-	   for( j=0;j<font->char_height;j++ )
+	   if (font->font_type == FONT_TYPE_1BPP)
 	   {
-		  xo = x;
-		  c=actual_char_width;
-		  for( i=0;i<bn;i++ )
-		  {
-			 b = font->p[index+]);
-			 for( k=0;(k<8) && c;k++ )
-			 {
-				if( b & 0x01 )
-				{
-				   gui->pset(xo,yo,fc);
-				}
-				else
-				{
-				   gui->pset(xo,yo,bc);
-				}
-				b >>= 1;
-				xo++;
-				c--;
-			 }
-		  }
-		  yo++;
-	   }
+         index = (bt - font->start_char)* font->char_height * bn;
+         for( j=0;j<font->char_height;j++ )
+         {
+           xo = x;
+           c=actual_char_width;
+           for( i=0;i<bn;i++ )
+           {
+             b = font->p[index++];
+             for( k=0;(k<8) && c;k++ )
+             {
+               if( b & 0x01 )
+               {
+                  gui->pset(xo,yo,fc);
+               }
+               else
+               {
+                  gui->pset(xo,yo,bc);
+               }
+               b >>= 1;
+               xo++;
+               c--;
+             }
+           }
+           yo++;
+         }
+      }
+      else if (font->font_type == FONT_TYPE_8BPP)
+      {
+         index = (bt - font->start_char)* font->char_height * font->char_width;
+         for( j=0;j<font->char_height;j++ )
+         {
+            xo = x;
+            for( i=0;i<actual_char_width;i++ )
+            {
+               b = font->p[index++];
+               color = (((fc & 0xFF) * b + (bc & 0xFF) * (256 - b)) >> 8) & 0xFF |//Blue component
+                       (((fc & 0xFF00) * b + (bc & 0xFF00) * (256 - b)) >> 8)  & 0xFF00|//Green component
+                       (((fc & 0xFF0000) * b + (bc & 0xFF0000) * (256 - b)) >> 8) & 0xFF0000; //Red component
+               gui->pset(xo,yo,color);
+               xo++;
+            }
+            index += font->char_width - actual_char_width;
+            yo++;
+         }
+      }
    }
-
 }
 
 void _UG_PutText(UG_TEXT* txt)
@@ -6189,6 +6205,7 @@ UG_RESULT UG_ButtonCreate( UG_WINDOW* wnd, UG_BUTTON* btn, UG_U8 id, UG_S16 xs, 
    btn->abc = wnd->bc;
    btn->afc = wnd->fc;
    btn->style = BTN_STYLE_3D;
+   btn->align = ALIGN_CENTER;
    btn->font = NULL;
    btn->str = "-";
 
