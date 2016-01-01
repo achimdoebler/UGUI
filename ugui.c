@@ -14,11 +14,26 @@
 // * Redistributions of source code must retain the above copyright notice.
 //
 /* -------------------------------------------------------------------------------- */
+/* -- MY SPECIAL THANKS GO TO                                                    -- */
+/* -------------------------------------------------------------------------------- */
+// Andrey Filimonov (-->https://github.com/Sermus)
+// for giving valuable suggestions, reporting bugs and adding several new features.
+// Andrey also put a lot of work in the implementaion of anti-aliased font support. 
+//
+// Mikhail Podkur (-->https://github.com/MikhailPodkur)
+// for adding cyrillic 8x12 font, checkbox feature and RGB565 support.
+//
+// Gustavo Denardin
+// for giving valuable suggestions regarding real-time os support.
+//
+// Samuel Kleiser
+// for reporting bugs and giving examples how to improve ÂµGUI.
+/* -------------------------------------------------------------------------------- */
 /* -- REVISION HISTORY                                                           -- */
 /* -------------------------------------------------------------------------------- */
-//  Dec 20, 2015  V0.4  Check box component with all funtions added.
-//                      Cyrillic font 8*12 added.
-//                      65k color schema added.
+//  Dec 20, 2015  V0.31 Checkbox component with all funtions added.
+//                      Cyrillic font 8x12 added.
+//                      RGB565 color schema added.
 //                      Windows components font could be getted from current GUI by default
 //  Mar 18, 2015  V0.3  Driver support added.
 //                      Window and object support added.
@@ -32,6 +47,7 @@
 //
 //  Oct 11, 2014  V0.1  First release.
 /* -------------------------------------------------------------------------------- */
+#include "stm32f10x.h"
 #include "ugui.h"
 
 /* Static functions */
@@ -2136,7 +2152,7 @@ __UG_FONT_DATA unsigned char font_8x12[256][12]={
 #endif
 
 
-#ifdef USE_FONT_8X12rus
+#ifdef USE_FONT_8X12_CYRILLIC
 __UG_FONT_DATA unsigned char font_8x12[256][12]={
 {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, // 0x00
 {0x00, 0x7E, 0xC3, 0x81, 0xA5, 0x81, 0xBD, 0x99, 0xC3, 0x7E, 0x00, 0x00}, // 0x01
@@ -4485,6 +4501,268 @@ __UG_FONT_DATA unsigned char font_32x53[256][212]={
 };
 #endif
 
+#ifdef USE_FONT_VECTOR_CYRILLIC
+UG_VECT_FONT VECT_FONT_CYRILLIC = {
+ ""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,"005532411402020035551435061426061426"
+,""
+,""
+,"24202636342430343020"
+,"20224042"
+,"0444420215113135"
+,"20264111133302133344443535050211"
+,"064001001101001046363536464545351110"
+,"3231111220113204442626161605050446123120"
+,"32302021312130202332"
+,"362521253021"
+,"313520312635"
+,"04232125230223424423"
+,"25210343"
+,"35372837252635252636"
+,"0343"
+,"2526362635253536"
+,"0640"
+,"05010110103030414145453636161605"
+,"36303012"
+,"011010303041414343064606"
+,"0040163640224345364543221605"
+,"363010044404"
+,"40004536361616054543433200020232"
+,"163610300110160501054445443303334536"
+,"004040414116"
+,"0404103030413313163604054445010241420213334210010413051636454433"
+,"163636454541413030101001010202131343"
+,"22233525323335362625362632223323"
+,"353732332333222332222526283736263525"
+,"45131341"
+,"04440242"
+,"15434311"
+,"0201011030103041414242242626"
+,"0516163605010110103030414144442424222241"
+,"06020220204242460444"
+,"0006063636450030304141424544443342333303"
+,"4130301010010105051616363645"
+,"161030003041414545363606"
+,"0600400006463303"
+,"060000402303"
+,"050110010516103041302343361643454536"
+,"060040460343"
+,"202610301636"
+,"40450516163604054536"
+,"0600401346131303"
+,"06004606"
+,"0600404640232300"
+,"060040460046"
+,"05011001160510303041414536453616"
+,"060000303041414242333303"
+,"050110011605103030414145364536162447"
+,"0600003030414142423333034613"
+,"10301001163613331302010244334445453605163041"
+,"26200040"
+,"16053645361600054045"
+,"00264026"
+,"0005160525162225362545364045"
+,"00464006"
+,"262300234023"
+,"004040064606"
+,"362620263020"
+,"0046"
+,"203030363626"
+,"30125230"
+,"0656"
+,"22332022302031303121"
+,"1526123226463243434615242444"
+,"10163645433232222213434536262615"
+,"3626152622133222433245361513"
+,"36261526221332224332453640461315"
+,"362615262213322243324536131534143443"
+,"2130304021261242"
+,"55251425221352225256475614131747"
+,"1610324346433212"
+,"1636202022261232"
+,"162727373746404042463242"
+,"1610142424422446"
+,"202610201636"
+,"3342425353561216363322123322"
+,"13222232324316124346"
+,"36261526221332224332453613154345"
+,"153532124332443512174344"
+,"452514252213422242471314"
+,"1612132222324332"
+,"2213132434454536224234243616"
+,"2025463612422536"
+,"15261215263642464536"
+,"12365236"
+,"1215263535465552261546553335"
+,"02460642"
+,"424502041504451527450727"
+,"024242060646"
+,"13242213212224252536302140304636"
+,"2026"
+,"43343243313234353526203110201626"
+,"041313444453"
+,"05454345210305034321"
+,"2620004023324232534246555355"
+,"410106011020"
+,"35372837252635253626"
+,"161212423021"
+,"2628565826164656"
+,"363656561616"
+,"30362141"
+,"254530362141"
+,"261511154636201130203040263602320434"
+,"0110102121120112400625343445453625363544445555463546"
+,"363006161030364655465455544343331016"
+,"36242432"
+,"3630364655465455544300060343"
+,"06004013461313032011"
+,"26200040243343334643"
+,"0600404606462726"
+,"233436342303210127360600"
+,"20223222"
+,"30322030"
+,"0002303212024232"
+,"1012404210003040"
+,"132434244334221332224332342224324313343224223213341324434322"
+,"1343"
+,"0353"
+,"0646404640000600"
+,"002010133330505330414150"
+,"26222636364545343424122212030306"
+,"26343422"
+,"060226222636364545340434"
+,"16122414422424463021"
+,"16113344464433133111"
+,"161246421646"
+,""
+,"1741012510213021"
+,"421702251131"
+,"303615161636"
+,"05141434343232121412011234454132"
+,"410106014140"
+,"20222426"
+,"361616054536243313242213332245330110301041301301"
+,"064601413303060110103030"
+,"0106061717474756515651401040011035251425132232221314"
+,"16053616032330101001010541304536"
+,"453433421203041503043334"
+,"02424442"
+,"1333"
+,"10405140174756475156011006011706121532124332344314344534"
+,"11311636262130400010"
+,"302121222233304142414233"
+,"064625214303"
+,"202610301636"
+,"163621222326"
+,"161212424142"
+,"051616262635323535460207"
+,"464020260110010202134010"
+,"232434243334332333243423"
+,"3616051612033212433203054404444310103030"
+,"060026002026204046364434333433434344"
+,"462615262242341413152213"
+,"152424234344443512233243"
+,"162727373746404042463242"
+,"10301001163613331302010244334445453605163041"
+,"2213132434454536224234243616"
+,"16361010222630301232"
+,"06020220204040460343"
+,"0006063636454544443333034000"
+,"0006063636450030304141424544443342333303"
+,"00064000"
+,"0706460646473630161111202030"
+,"0006063600303303"
+,"2620041300023342334413330213060440424644"
+,"16363645103030414142454444334233331301100516"
+,"060040460640"
+,"0600404606402020"
+,"0600401346131303"
+,"16114640201106162040"
+,"0600404640232300"
+,"060040460343"
+,"05011001160510303041414536453616"
+,"060040460040"
+,"060000303041414242333303"
+,"4130301010010105051616363645"
+,"26200040"
+,"0642000224024042"
+,"262014341030010343410110304143341403"
+,"00464006"
+,"4606060046473036"
+,"4046000202131343"
+,"4046000620260646"
+,"40460006202606464657"
+,"1016364545444433001016363313"
+,"0006263535343423062623034640"
+,"101636454544443316363313"
+,"36451636432310303041414501100516"
+,"06002125213030414541364525362303"
+,"4640104001024313011002133306"
+,"15262232263632433645434615242444"
+,"163614343645161234451242"
+,"34453645361634141216123232434334"
+,"16121242"
+,"262216561617565746422242"
+,"46261526221332224332131544144443"
+,"2622143402030605434245461403140543343445"
+,"3645433236163212243445344334"
+,"060246424206"
+,"06024642420610213021"
+,"1612241442242446"
+,"16134642224206162213"
+,"0602464202244224"
+,"060236320434"
+,"26160516120322123322352603053335"
+,"060236320232"
+,"351532124332443512174344"
+,"3626152622133222433245361513"
+,"36321252"
+,"4307032502034243"
+,"153512320312443532430304150443442227"
+,"02460642"
+,"0602363206364736"
+,"363204340204"
+,"4642020622264606"
+,"46420206222646065746"
+,"121612021636453634453414"
+,"020606263526243524044246"
+,"12161636453634453414"
+,"163645363212244443453243"
+,"12162414232543454332322325363645"
+,"424622422213132424443416"
+, 6,8};
+#endif
+
+
 #ifdef USE_FONT_4X6
    const UG_FONT FONT_4X6 = {(unsigned char*)font_4x6,FONT_TYPE_1BPP,4,6,0,255,NULL};
 #endif
@@ -4509,7 +4787,7 @@ __UG_FONT_DATA unsigned char font_32x53[256][212]={
 #ifdef USE_FONT_8X12
    const UG_FONT FONT_8X12 = {(unsigned char*)font_8x12,FONT_TYPE_1BPP,8,12,0,255,NULL};
 #endif
-#ifdef USE_FONT_8X12rus
+#ifdef USE_FONT_8X12_CYRILLIC
    const UG_FONT FONT_8X12 = {(unsigned char*)font_8x12,FONT_TYPE_1BPP,8,12,0,255,NULL};
 #endif
 #ifdef USE_FONT_8X14
@@ -4537,6 +4815,7 @@ __UG_FONT_DATA unsigned char font_32x53[256][212]={
    const UG_FONT FONT_32X53 = {(unsigned char*)font_32x53,FONT_TYPE_1BPP,32,53,0,255,NULL};
 #endif
 
+   
 
 
 UG_S16 UG_Init( UG_GUI* g, void (*p)(UG_S16,UG_S16,UG_COLOR), UG_S16 x, UG_S16 y )
@@ -4560,10 +4839,10 @@ UG_S16 UG_Init( UG_GUI* g, void (*p)(UG_S16,UG_S16,UG_COLOR), UG_S16 x, UG_S16 y
    g->font.start_char = 0;
    g->font.end_char = 0;
    g->font.widths = NULL;
-   #ifdef USE_COLOR_16MLN
+   #ifdef USE_COLOR_RGB888
    g->desktop_color = 0x5E8BEf;
    #endif
-   #ifdef USE_COLOR_65K
+   #ifdef USE_COLOR_RGB565
    g->desktop_color = 0x5C5D;
    #endif
    g->fore_color = C_WHITE;
@@ -4870,10 +5149,7 @@ void UG_DrawArc( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_U8 s, UG_COLOR c )
 
 void UG_DrawLine( UG_S16 x1, UG_S16 y1, UG_S16 x2, UG_S16 y2, UG_COLOR c )
 {
-    UG_S16 dx, dy, i1, i2, i, kx, ky;
-    UG_S16 d;     
-    UG_S16 x, y;
-    UG_S16 flag;
+   UG_S16 n, dx, dy, sgndx, sgndy, dxabs, dyabs, x, y, drawx, drawy;
 
    /* Is hardware acceleration available? */
    if ( gui->driver[DRIVER_DRAW_LINE].state & DRIVER_ENABLED )
@@ -4881,73 +5157,163 @@ void UG_DrawLine( UG_S16 x1, UG_S16 y1, UG_S16 x2, UG_S16 y2, UG_COLOR c )
       if( ((UG_RESULT(*)(UG_S16 x1, UG_S16 y1, UG_S16 x2, UG_S16 y2, UG_COLOR c))gui->driver[DRIVER_DRAW_LINE].driver)(x1,y1,x2,y2,c) == UG_RESULT_OK ) return;
    }
 
+   dx = x2 - x1;
+   dy = y2 - y1;
+   dxabs = (dx>0)?dx:-dx;
+   dyabs = (dy>0)?dy:-dy;
+   sgndx = (dx>0)?1:-1;
+   sgndy = (dy>0)?1:-1;
+   x = dyabs >> 1;
+   y = dxabs >> 1;
+   drawx = x1;
+   drawy = y1;
 
-    dy = y2 - y1;
-    dx = x2 - x1;
-    if (dx==0 && dy==0)
-    {
-        gui->pset(x1,y1, c);    
-        return;
-    }
+   gui->pset(drawx, drawy,c);
+
+   if( dxabs >= dyabs )
+   {
+      for( n=0; n<dxabs; n++ )
+      {
+         y += dyabs;
+         if( y >= dxabs )
+         {
+            y -= dxabs;
+            drawy += sgndy;
+         }
+         drawx += sgndx;
+         gui->pset(drawx, drawy,c);
+      }
+   }
+   else
+   {
+      for( n=0; n<dyabs; n++ )
+      {
+         x += dxabs;
+         if( x >= dyabs )
+         {
+            x -= dyabs;
+            drawx += sgndx;
+         }
+         drawy += sgndy;
+         gui->pset(drawx, drawy,c);
+      }
+   }  
+}
+
+void UG_FillPoly(UG_PointPtr p, UG_U8 n, UG_U8 filled, UG_COLOR color)
+{
+	UG_S16 i;
+	UG_S16 j;
+	UG_S16 index;
+	UG_S16 y;
+	UG_S16 miny, maxy, pmaxy;
+	UG_S16 x1, y1;
+	UG_S16 x2, y2;
+	UG_S16 ind1, ind2;
+	UG_S16 ints;
+    UG_S16 polyInts[UG_MaxPolyPointNum];
     
-    kx = 1; 
-    ky = 1; 
+	if ((n <= 0)||(n>UG_MaxPolyPointNum))
+		return;
 
-    if (dx < 0) 
-    { 
-        dx = -dx; 
-        kx = -1; 
-    }
-    else 
-        if (dx==0)
-            kx = 0;    
+    if (filled)
+    {    
+        miny = p[0].y;
+        maxy = p[0].y;
+        for (i = 1; (i < n); i++) 
+        {
+            if (p[i].y < miny) 
+                miny = p[i].y;
+            
+            if (p[i].y > maxy) 
+                maxy = p[i].y;
+        }
+        pmaxy = maxy;
+        
+        for (y = miny; (y <= maxy); y++) 
+        {
+            ints = 0;
+            for (i = 0; (i < n); i++) 
+            {
+                if (i) 
+                {
+                    ind1 = i - 1;
+                    ind2 = i;
+                } 
+                else 
+                {
+                    ind1 = n - 1;
+                    ind2 = 0;
+                }
+                
+                y1 = p[ind1].y;
+                y2 = p[ind2].y;
+                if (y1 < y2) 
+                {
+                    x1 = p[ind1].x;
+                    x2 = p[ind2].x;
+                } 
+                else if (y1 > y2) 
+                     {
+                         y2 = p[ind1].y;
+                         y1 = p[ind2].y;
+                         x2 = p[ind1].x;
+                         x1 = p[ind2].x;
+                     } 
+                     else 
+                     {
+                         continue;
+                     }
 
-    if (dy < 0) 
-    { 
-        dy = -dy; 
-        ky = -1; 
-    }
+                if ((y >= y1) && (y < y2)) 
+                {
+                    polyInts[ints++] = (UG_S16) ((float) ((y - y1) * (x2 - x1))/(float) (y2 - y1) + 0.5 + x1);
+                }
+                else 
+                    if ((y == pmaxy) && (y == y2)) 
+                    {
+                        polyInts[ints++] = x2;
+                    }
+            }
 
-    if(dx<dy)
-    { 
-        flag = 0; 
-        d = dx; 
-        dx = dy; 
-        dy = d; 
-    }
-    else         
-        flag = 1;
-
-    i1 = dy + dy; 
-    d = i1 - dx; 
-    i2 = d - dx;
-    x = x1; 
-    y = y1;
-
-    for (i=0; i<dx; i++)
-    {
-        gui->pset(x,y, c);     
-
-        if (flag) 
-            x += kx;
-        else     
-            y += ky;
-
-        if (d < 0) 
-            d += i1;
-        else
-        {       
-            d += i2;
-            if (flag) 
-                y += ky; 
-            else     
-                x += kx;
+            for (i=1; (i<ints); i++) 
+            {
+                index = polyInts[i];
+                j = i;
+                while ((j > 0) && (polyInts[j-1] > index)) 
+                {
+                    polyInts[j] = polyInts[j-1];
+                    j--;
+                }
+                polyInts[j] = index;
+            }
+            
+            for (i=0; (i < (ints-1)); i += 2) 
+            {
+                UG_DrawLine(polyInts[i], y, polyInts[i+1], y, color);
+            }
         }
     }
-    gui->pset(x,y, c);
-
-   
+	else
+    {
+        for (i = 0; (i < n); i++) 
+        {
+            if (i) 
+            {
+                ind1 = i - 1;
+                ind2 = i;
+            } 
+            else 
+            {
+                ind1 = n - 1;
+                ind2 = 0;
+            }
+            
+            UG_DrawLine(p[ind1].x, p[ind1].y, p[ind2].x, p[ind2].y, color);
+        }    
+	}
 }
+
 
 void UG_PutString( UG_S16 x, UG_S16 y, char* str )
 {
@@ -5069,10 +5435,24 @@ void UG_FontSetVSpace( UG_U16 s )
    gui->char_v_space = s;
 }
 
+#ifdef USE_FONT_VECTOR_CYRILLIC    
+void UG_GetVectFont(UG_FONT *font, UG_U16 w, UG_U16 h)
+{
+    font->char_width = w;
+    font->char_height = h;
+    font->start_char = 0;
+    font->end_char = 255;
+    font->font_type = FONT_TYPE_VECTOR_1BPP;
+    font->widths = NULL;
+    font->p = (unsigned char*)&VECT_FONT_CYRILLIC;
+}
+#endif    
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef USE_COLOR_16MLN
+#ifdef USE_COLOR_RGB888
 const UG_COLOR pal_window[] =
 {
    /* Frame 0 */
@@ -5169,7 +5549,7 @@ const UG_COLOR pal_checkbox_released[] =
 };
 #endif
 
-#ifdef USE_COLOR_65K
+#ifdef USE_COLOR_RGB565
 const UG_COLOR pal_window[] =
 {
    0x632C,
@@ -5276,6 +5656,7 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
 
    bt = (UG_U8)chr;
 
+   #ifndef USE_FONT_8X12_CYRILLIC 
    switch ( bt )
    {
       case 0xF6: bt = 0x94; break; // ö
@@ -5287,7 +5668,8 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
       case 0xB5: bt = 0xE6; break; // µ
       case 0xB0: bt = 0xF8; break; // °
    }
-
+   #endif 
+   
    if (bt < font->start_char || bt > font->end_char) return;
    
    yo = y;
@@ -5297,6 +5679,24 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
    if ( font->char_width % 8 ) bn++;
    actual_char_width = (font->widths ? font->widths[bt - font->start_char] : font->char_width);
 
+   #ifdef USE_FONT_VECTOR_CYRILLIC
+   if (font->font_type == FONT_TYPE_VECTOR_1BPP) // vector font could not use acceleration,
+   {
+      UG_VECT_FONT *fnt;
+      fnt = (UG_VECT_FONT*)font->p;
+//       if ( gui->driver[DRIVER_DRAW_LINE].state & DRIVER_ENABLED )
+      i = 0;
+      while(fnt->p[bt][i]!=0)
+      {
+         UG_DrawLine(x+((((UG_S16)fnt->p[bt][i])-48)*actual_char_width/fnt->char_code_width),
+                     y+((((UG_S16)fnt->p[bt][i+1])-48)*font->char_height/fnt->char_code_height),
+                     x+((((UG_S16)fnt->p[bt][i+2])-48)*actual_char_width/fnt->char_code_width),
+                     y+((((UG_S16)fnt->p[bt][i+3])-48)*font->char_height/fnt->char_code_height), fc);
+         i += 4;
+      }
+   }
+   else    
+   #endif  
    /* Is hardware acceleration available? */
    if ( gui->driver[DRIVER_FILL_AREA].state & DRIVER_ENABLED )
    {
@@ -5411,9 +5811,7 @@ void _UG_PutText(UG_TEXT* txt)
    UG_S16 char_height=txt->font->char_height;
    UG_S16 char_h_space=txt->h_space;
    UG_S16 char_v_space=txt->v_space;
-//   UG_U16 i,j,k,xo,yo,cw,bn;
-//   UG_U8  b,bt;
-//   UG_U32 index;
+
    char chr;
 
    char* str = txt->str;
@@ -5887,11 +6285,11 @@ UG_RESULT UG_WindowCreate( UG_WINDOW* wnd, UG_OBJECT* objlst, UG_U8 objcnt, void
    wnd->objcnt = objcnt;
    wnd->objlst = objlst;
    wnd->state = WND_STATE_VALID;
-   #ifdef USE_COLOR_16MLN
+   #ifdef USE_COLOR_RGB888
    wnd->fc = 0x000000;
    wnd->bc = 0xF0F0F0;
    #endif
-   #ifdef USE_COLOR_65K
+   #ifdef USE_COLOR_RGB565
    wnd->fc = 0x0000;
    wnd->bc = 0xEF7D;
    #endif
@@ -6636,6 +7034,7 @@ UG_RESULT UG_ButtonCreate( UG_WINDOW* wnd, UG_BUTTON* btn, UG_U8 id, UG_S16 xs, 
    if ( obj == NULL ) return UG_RESULT_FAIL;
 
    /* Initialize object-specific parameters */
+   btn->obj = obj; 
    btn->state = BTN_STATE_RELEASED;
    btn->bc = wnd->bc;
    btn->fc = wnd->fc;
@@ -7174,6 +7573,7 @@ UG_RESULT UG_CheckboxCreate( UG_WINDOW* wnd, UG_CHECKBOX* chb, UG_U8 id, UG_S16 
    if ( obj == NULL ) return UG_RESULT_FAIL;
 
    /* Initialize object-specific parameters */
+   chb->obj = obj; 
    chb->state = CHB_STATE_RELEASED;
    chb->bc = wnd->bc;
    chb->fc = wnd->fc;
@@ -7775,6 +8175,7 @@ UG_RESULT UG_TextboxCreate( UG_WINDOW* wnd, UG_TEXTBOX* txb, UG_U8 id, UG_S16 xs
    if ( obj == NULL ) return UG_RESULT_FAIL;
 
    /* Initialize object-specific parameters */
+   txb->obj = obj; 
    txb->str = NULL;
    if (gui != NULL) txb->font = &gui->font;
    else txb->font = NULL;
@@ -8126,6 +8527,7 @@ UG_RESULT UG_ImageCreate( UG_WINDOW* wnd, UG_IMAGE* img, UG_U8 id, UG_S16 xs, UG
    if ( obj == NULL ) return UG_RESULT_FAIL;
 
    /* Initialize object-specific parameters */
+   img->obj = obj; 
    img->img = NULL;
    img->type = IMG_TYPE_BMP;
 

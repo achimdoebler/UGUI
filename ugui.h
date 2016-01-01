@@ -17,10 +17,9 @@
 #ifndef __UGUI_H
 #define __UGUI_H
 
-//#include "system.h"
 #include "stm32f10x.h"
+//#include "system.h"
 #include "ugui_config.h"
-
 
 /* -------------------------------------------------------------------------------- */
 /* -- µGUI FONTS                                                                 -- */
@@ -29,8 +28,18 @@
 typedef enum
 {
 	FONT_TYPE_1BPP,
-	FONT_TYPE_8BPP
+	FONT_TYPE_8BPP,
+    FONT_TYPE_VECTOR_1BPP 
 } FONT_TYPE;
+
+#ifdef USE_FONT_VECTOR_CYRILLIC
+typedef struct
+{
+   const char *p[256];
+   UG_S16 char_code_width;
+   UG_S16 char_code_height;
+} UG_VECT_FONT;
+#endif
 
 typedef struct
 {
@@ -67,7 +76,7 @@ typedef struct
 #ifdef USE_FONT_8X12
    extern const UG_FONT FONT_8X12;
 #endif
-#ifdef USE_FONT_8X12rus
+#ifdef USE_FONT_8X12_CYRILLIC
    extern const UG_FONT FONT_8X12;
 #endif
 #ifdef USE_FONT_8X14
@@ -101,10 +110,10 @@ typedef struct
 typedef struct S_OBJECT                               UG_OBJECT;
 typedef struct S_WINDOW                               UG_WINDOW;
 typedef UG_S8                                         UG_RESULT;
-#ifdef USE_COLOR_16MLN
+#ifdef USE_COLOR_RGB888
 typedef UG_U32                                        UG_COLOR;
 #endif
-#ifdef USE_COLOR_65K
+#ifdef USE_COLOR_RGB565
 typedef UG_U16                                        UG_COLOR;
 #endif
 /* -------------------------------------------------------------------------------- */
@@ -354,6 +363,7 @@ struct S_WINDOW
 /* Button structure */
 typedef struct
 {
+   UG_OBJECT* obj;  // to get quick accsess to self system Object from user defined components
    UG_U8 state;
    UG_U8 style;
    UG_COLOR fc;
@@ -406,11 +416,12 @@ typedef struct
 #define BTN_EVENT_CLICKED                             OBJ_EVENT_CLICKED
 
 /* -------------------------------------------------------------------------------- */
-/* -- CHECKBOX OBJECT                                                              -- */
+/* -- CHECKBOX OBJECT                                                            -- */
 /* -------------------------------------------------------------------------------- */
 /* Checkbox structure */
 typedef struct
 {
+   UG_OBJECT* obj; 
    UG_U8 state;
    UG_U8 style;
    UG_COLOR fc;
@@ -470,6 +481,7 @@ typedef struct
 /* Textbox structure */
 typedef struct
 {
+   UG_OBJECT* obj; 
    char* str;
    const UG_FONT* font;
    UG_U8 style;
@@ -508,6 +520,7 @@ typedef struct
 /* Image structure */
 typedef struct
 {
+   UG_OBJECT* obj; 
    void* img;
    UG_U8 type;
 } UG_IMAGE;
@@ -594,7 +607,7 @@ typedef struct
 /* -- µGUI COLORS                                                                -- */
 /* -- Source: http://www.rapidtables.com/web/color/RGB_Color.htm                 -- */
 /* -------------------------------------------------------------------------------- */
-#ifdef USE_COLOR_65K
+#ifdef USE_COLOR_RGB565
 #define C_MAROON                       0x8000
 #define C_DARK_RED                     0x8800
 #define C_BROWN                        0xA145
@@ -736,7 +749,7 @@ typedef struct
 #define C_WHITE                        0xFFFF
 #endif
 
-#ifdef USE_COLOR_16MLN
+#ifdef USE_COLOR_RGB888
 #define  C_MAROON                     0x800000
 #define  C_DARK_RED                   0x8B0000
 #define  C_BROWN                      0xA52A2A
@@ -896,6 +909,7 @@ void UG_DrawCircle( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_COLOR c );
 void UG_FillCircle( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_COLOR c );
 void UG_DrawArc( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_U8 s, UG_COLOR c );
 void UG_DrawLine( UG_S16 x1, UG_S16 y1, UG_S16 x2, UG_S16 y2, UG_COLOR c );
+void UG_FillPoly(UG_PointPtr p, UG_U8 n, UG_U8 filled, UG_COLOR color);
 void UG_PutString( UG_S16 x, UG_S16 y, char* str );
 void UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc );
 void UG_ConsolePutString( char* str );
@@ -908,6 +922,7 @@ UG_S16 UG_GetXDim( void );
 UG_S16 UG_GetYDim( void );
 void UG_FontSetHSpace( UG_U16 s );
 void UG_FontSetVSpace( UG_U16 s );
+void UG_GetVectFont(UG_FONT *font, UG_U16 w, UG_U16 h);
 
 /* Miscellaneous functions */
 void UG_WaitForUpdate( void );
@@ -1020,7 +1035,6 @@ UG_U8 UG_CheckboxGetStyle( UG_WINDOW* wnd, UG_U8 id );
 UG_S8 UG_CheckboxGetHSpace( UG_WINDOW* wnd, UG_U8 id );
 UG_S8 UG_CheckboxGetVSpace( UG_WINDOW* wnd, UG_U8 id );
 UG_U8 UG_CheckboxGetAlignment( UG_WINDOW* wnd, UG_U8 id );
-
 
 /* Textbox functions */
 UG_RESULT UG_TextboxCreate( UG_WINDOW* wnd, UG_TEXTBOX* txb, UG_U8 id, UG_S16 xs, UG_S16 ys, UG_S16 xe, UG_S16 ye );
