@@ -34,6 +34,9 @@
 /* Specify platform-dependent integer types here */
 
 #define __UG_FONT_DATA const
+/* Override if you store font data not in RAM/SRAM
+ * for example for pgm_read_byte w/ PROGMEM on AVR */
+#define FONT_DATA_ACCESS(x) (x)
 typedef uint8_t      UG_U8;
 typedef int8_t       UG_S8;
 typedef uint16_t     UG_U16;
