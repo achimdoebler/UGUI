@@ -58,6 +58,16 @@
  void _UG_CheckboxUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
  void _UG_ImageUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
  void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const UG_FONT* font);
+ void _UG_PutText(UG_TEXT* txt);
+ UG_OBJECT* _UG_GetFreeObject( UG_WINDOW* wnd );
+ UG_OBJECT* _UG_SearchObject( UG_WINDOW* wnd, UG_U8 type, UG_U8 id );
+ UG_RESULT _UG_DeleteObject( UG_WINDOW* wnd, UG_U8 type, UG_U8 id );
+ void _UG_ProcessTouchData( UG_WINDOW* wnd );
+ void _UG_UpdateObjects( UG_WINDOW* wnd );
+ void _UG_HandleEvents( UG_WINDOW* wnd );
+ void _UG_DrawObjectFrame( UG_S16 xs, UG_S16 ys, UG_S16 xe, UG_S16 ye, UG_COLOR* p );
+ void _UG_SendObjectPrerenderEvent(UG_WINDOW *wnd,UG_OBJECT *obj);
+ void _UG_SendObjectPostrenderEvent(UG_WINDOW *wnd,UG_OBJECT *obj);
 
  /* Pointer to the gui */
 static UG_GUI* gui;
