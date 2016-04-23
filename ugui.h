@@ -17,9 +17,15 @@
 #ifndef __UGUI_H
 #define __UGUI_H
 
-#include "system.h"
+#include <stdint.h>
 #include "ugui_config.h"
 
+typedef uint8_t      UG_U8;
+typedef int8_t       UG_S8;
+typedef uint16_t     UG_U16;
+typedef int16_t      UG_S16;
+typedef uint32_t     UG_U32;
+typedef int32_t      UG_S32;
 
 /* -------------------------------------------------------------------------------- */
 /* -- µGUI FONTS                                                                 -- */
@@ -895,9 +901,9 @@ void UG_DrawCircle( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_COLOR c );
 void UG_FillCircle( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_COLOR c );
 void UG_DrawArc( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_U8 s, UG_COLOR c );
 void UG_DrawLine( UG_S16 x1, UG_S16 y1, UG_S16 x2, UG_S16 y2, UG_COLOR c );
-void UG_PutString( UG_S16 x, UG_S16 y, char* str );
+void UG_PutString( UG_S16 x, UG_S16 y, const char* str );
 void UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc );
-void UG_ConsolePutString( char* str );
+void UG_ConsolePutString( const char* str );
 void UG_ConsoleSetArea( UG_S16 xs, UG_S16 ys, UG_S16 xe, UG_S16 ye );
 void UG_ConsoleSetForecolor( UG_COLOR c );
 void UG_ConsoleSetBackcolor( UG_COLOR c );
