@@ -33,8 +33,8 @@ typedef int32_t      UG_S32;
 /* -------------------------------------------------------------------------------- */
 typedef enum
 {
-	FONT_TYPE_1BPP,
-	FONT_TYPE_8BPP
+  FONT_TYPE_1BPP,
+  FONT_TYPE_8BPP
 } FONT_TYPE;
 
 typedef struct
