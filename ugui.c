@@ -50,14 +50,14 @@
 #include "ugui.h"
 
 /* Static functions */
- UG_RESULT _UG_WindowDrawTitle( UG_WINDOW* wnd );
- void _UG_WindowUpdate( UG_WINDOW* wnd );
- UG_RESULT _UG_WindowClear( UG_WINDOW* wnd );
- void _UG_TextboxUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
- void _UG_ButtonUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
- void _UG_CheckboxUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
- void _UG_ImageUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
- void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const UG_FONT* font);
+static UG_RESULT _UG_WindowDrawTitle( UG_WINDOW* wnd );
+static void _UG_WindowUpdate( UG_WINDOW* wnd );
+static UG_RESULT _UG_WindowClear( UG_WINDOW* wnd );
+static void _UG_TextboxUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
+static void _UG_ButtonUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
+static void _UG_CheckboxUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
+static void _UG_ImageUpdate(UG_WINDOW* wnd, UG_OBJECT* obj);
+static void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const UG_FONT* font);
 
  /* Pointer to the gui */
 static UG_GUI* gui;
@@ -5323,9 +5323,9 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
 			  for( i=0;i<actual_char_width;i++ )
 			  {
 				 b = font->p[index++];
-				 color = (((fc & 0xFF) * b + (bc & 0xFF) * (256 - b)) >> 8) & 0xFF |//Blue component
-				         (((fc & 0xFF00) * b + (bc & 0xFF00) * (256 - b)) >> 8)  & 0xFF00|//Green component
-				         (((fc & 0xFF0000) * b + (bc & 0xFF0000) * (256 - b)) >> 8) & 0xFF0000; //Red component
+				 color = ((((fc & 0xFF) * b + (bc & 0xFF) * (256 - b)) >> 8) & 0xFF) |//Blue component
+                                         ((((fc & 0xFF00) * b + (bc & 0xFF00) * (256 - b)) >> 8)  & 0xFF00)|//Green component
+                                         ((((fc & 0xFF0000) * b + (bc & 0xFF0000) * (256 - b)) >> 8) & 0xFF0000); //Red component
 				 push_pixel(color);
 			  }
 			  index += font->char_width - actual_char_width;
@@ -5372,9 +5372,9 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
             for( i=0;i<actual_char_width;i++ )
             {
                b = font->p[index++];
-               color = (((fc & 0xFF) * b + (bc & 0xFF) * (256 - b)) >> 8) & 0xFF |//Blue component
-                       (((fc & 0xFF00) * b + (bc & 0xFF00) * (256 - b)) >> 8)  & 0xFF00|//Green component
-                       (((fc & 0xFF0000) * b + (bc & 0xFF0000) * (256 - b)) >> 8) & 0xFF0000; //Red component
+               color = ((((fc & 0xFF) * b + (bc & 0xFF) * (256 - b)) >> 8) & 0xFF) |//Blue component
+                       ((((fc & 0xFF00) * b + (bc & 0xFF00) * (256 - b)) >> 8)  & 0xFF00)|//Green component
+                       ((((fc & 0xFF0000) * b + (bc & 0xFF0000) * (256 - b)) >> 8) & 0xFF0000); //Red component
                gui->pset(xo,yo,color);
                xo++;
             }
@@ -5385,7 +5385,7 @@ void _UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc, const 
    }
 }
 
-void _UG_PutText(UG_TEXT* txt)
+static void _UG_PutText(UG_TEXT* txt)
 {
    UG_U16 sl,rc,wl;
    UG_S16 xp,yp;
@@ -5461,7 +5461,7 @@ void _UG_PutText(UG_TEXT* txt)
    }
 }
 
-UG_OBJECT* _UG_GetFreeObject( UG_WINDOW* wnd )
+static UG_OBJECT* _UG_GetFreeObject( UG_WINDOW* wnd )
 {
    UG_U8 i;
    UG_OBJECT* obj=(UG_OBJECT*)wnd->objlst;
@@ -5478,7 +5478,7 @@ UG_OBJECT* _UG_GetFreeObject( UG_WINDOW* wnd )
    return NULL;
 }
 
-UG_OBJECT* _UG_SearchObject( UG_WINDOW* wnd, UG_U8 type, UG_U8 id )
+static UG_OBJECT* _UG_SearchObject( UG_WINDOW* wnd, UG_U8 type, UG_U8 id )
 {
    UG_U8 i;
    UG_OBJECT* obj=(UG_OBJECT*)wnd->objlst;
@@ -5498,7 +5498,7 @@ UG_OBJECT* _UG_SearchObject( UG_WINDOW* wnd, UG_U8 type, UG_U8 id )
    return NULL;
 }
 
-UG_RESULT _UG_DeleteObject( UG_WINDOW* wnd, UG_U8 type, UG_U8 id )
+static UG_RESULT _UG_DeleteObject( UG_WINDOW* wnd, UG_U8 type, UG_U8 id )
 {
    UG_OBJECT* obj=NULL;
 
@@ -5521,7 +5521,7 @@ UG_RESULT _UG_DeleteObject( UG_WINDOW* wnd, UG_U8 type, UG_U8 id )
    return UG_RESULT_FAIL;
 }
 
-void _UG_ProcessTouchData( UG_WINDOW* wnd )
+static void _UG_ProcessTouchData( UG_WINDOW* wnd )
 {
    UG_S16 xp,yp;
    UG_U16 i,objcnt;
@@ -5593,7 +5593,7 @@ void _UG_ProcessTouchData( UG_WINDOW* wnd )
    }
 }
 
-void _UG_UpdateObjects( UG_WINDOW* wnd )
+static void _UG_UpdateObjects( UG_WINDOW* wnd )
 {
    UG_U16 i,objcnt;
    UG_OBJECT* obj;
@@ -5624,7 +5624,7 @@ void _UG_UpdateObjects( UG_WINDOW* wnd )
    }
 }
 
-void _UG_HandleEvents( UG_WINDOW* wnd )
+static void _UG_HandleEvents( UG_WINDOW* wnd )
 {
    UG_U16 i,objcnt;
    UG_OBJECT* obj;
@@ -5660,7 +5660,7 @@ void _UG_HandleEvents( UG_WINDOW* wnd )
    }
 }
 
-void _UG_DrawObjectFrame( UG_S16 xs, UG_S16 ys, UG_S16 xe, UG_S16 ye, UG_COLOR* p )
+static void _UG_DrawObjectFrame( UG_S16 xs, UG_S16 ys, UG_S16 xe, UG_S16 ye, UG_COLOR* p )
 {
    // Frame 0
    UG_DrawLine(xs, ys  , xe-1, ys  , *p++);
@@ -5680,7 +5680,7 @@ void _UG_DrawObjectFrame( UG_S16 xs, UG_S16 ys, UG_S16 xe, UG_S16 ye, UG_COLOR* 
 }
 
 #ifdef USE_PRERENDER_EVENT
-void _UG_SendObjectPrerenderEvent(UG_WINDOW *wnd,UG_OBJECT *obj)
+static void _UG_SendObjectPrerenderEvent(UG_WINDOW *wnd,UG_OBJECT *obj)
 {
 	UG_MESSAGE msg;
 	msg.event = OBJ_EVENT_PRERENDER;
@@ -5694,7 +5694,7 @@ void _UG_SendObjectPrerenderEvent(UG_WINDOW *wnd,UG_OBJECT *obj)
 #endif
 
 #ifdef USE_POSTRENDER_EVENT
-void _UG_SendObjectPostrenderEvent(UG_WINDOW *wnd,UG_OBJECT *obj)
+static void _UG_SendObjectPostrenderEvent(UG_WINDOW *wnd,UG_OBJECT *obj)
 {
 	UG_MESSAGE msg;
 	msg.event = OBJ_EVENT_POSTRENDER;
