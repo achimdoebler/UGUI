@@ -7159,6 +7159,7 @@ UG_RESULT UG_CheckboxCreate( UG_WINDOW* wnd, UG_CHECKBOX* chb, UG_U8 id, UG_S16 
    if ( obj == NULL ) return UG_RESULT_FAIL;
 
    /* Initialize object-specific parameters */
+   chb->obj = obj; 
    chb->state = CHB_STATE_RELEASED;
    chb->bc = wnd->bc;
    chb->fc = wnd->fc;
