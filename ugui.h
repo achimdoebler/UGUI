@@ -17,9 +17,8 @@
 #ifndef __UGUI_H
 #define __UGUI_H
 
-#include "system.h"
+//#include "system.h"
 #include "ugui_config.h"
-
 
 /* -------------------------------------------------------------------------------- */
 /* -- µGUI FONTS                                                                 -- */
@@ -28,8 +27,18 @@
 typedef enum
 {
 	FONT_TYPE_1BPP,
-	FONT_TYPE_8BPP
+	FONT_TYPE_8BPP,
+    FONT_TYPE_VECTOR_1BPP 
 } FONT_TYPE;
+
+#ifdef USE_FONT_VECTOR_CYRILLIC
+typedef struct
+{
+   const char *p[256];
+   UG_S16 char_code_width;
+   UG_S16 char_code_height;
+} UG_VECT_FONT;
+#endif
 
 typedef struct
 {
@@ -353,6 +362,7 @@ struct S_WINDOW
 /* Button structure */
 typedef struct
 {
+   UG_OBJECT* obj;  // to get quick accsess to self system Object from user defined components
    UG_U8 state;
    UG_U8 style;
    UG_COLOR fc;
@@ -410,6 +420,7 @@ typedef struct
 /* Checkbox structure */
 typedef struct
 {
+   UG_OBJECT* obj; 
    UG_U8 state;
    UG_U8 style;
    UG_COLOR fc;
@@ -469,6 +480,7 @@ typedef struct
 /* Textbox structure */
 typedef struct
 {
+   UG_OBJECT* obj; 
    char* str;
    const UG_FONT* font;
    UG_U8 style;
@@ -507,6 +519,7 @@ typedef struct
 /* Image structure */
 typedef struct
 {
+   UG_OBJECT* obj; 
    void* img;
    UG_U8 type;
 } UG_IMAGE;
@@ -895,6 +908,7 @@ void UG_DrawCircle( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_COLOR c );
 void UG_FillCircle( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_COLOR c );
 void UG_DrawArc( UG_S16 x0, UG_S16 y0, UG_S16 r, UG_U8 s, UG_COLOR c );
 void UG_DrawLine( UG_S16 x1, UG_S16 y1, UG_S16 x2, UG_S16 y2, UG_COLOR c );
+void UG_FillPoly(UG_PointPtr p, UG_U8 n, UG_U8 filled, UG_COLOR color);
 void UG_PutString( UG_S16 x, UG_S16 y, char* str );
 void UG_PutChar( char chr, UG_S16 x, UG_S16 y, UG_COLOR fc, UG_COLOR bc );
 void UG_ConsolePutString( char* str );
@@ -907,6 +921,7 @@ UG_S16 UG_GetXDim( void );
 UG_S16 UG_GetYDim( void );
 void UG_FontSetHSpace( UG_U16 s );
 void UG_FontSetVSpace( UG_U16 s );
+void UG_GetVectFont(UG_FONT *font, UG_U16 w, UG_U16 h);
 
 /* Miscellaneous functions */
 void UG_WaitForUpdate( void );
