@@ -21,105 +21,10 @@
 #include "ugui_config.h"
 
 /* -------------------------------------------------------------------------------- */
-/* -- µGUI FONTS                                                                 -- */
-/* -- Source: http://www.mikrocontroller.net/user/show/benedikt                  -- */
-/* -------------------------------------------------------------------------------- */
-typedef enum
-{
-	FONT_TYPE_1BPP,
-	FONT_TYPE_8BPP,
-    FONT_TYPE_VECTOR_1BPP 
-} FONT_TYPE;
-
-#ifdef USE_FONT_VECTOR_CYRILLIC
-typedef struct
-{
-   const char *p[256];
-   UG_S16 char_code_width;
-   UG_S16 char_code_height;
-} UG_VECT_FONT;
-#endif
-
-typedef struct
-{
-   unsigned char* p;
-   FONT_TYPE font_type;
-   UG_S16 char_width;
-   UG_S16 char_height;
-   UG_U16 start_char;
-   UG_U16 end_char;
-   UG_U8  *widths;
-} UG_FONT;
-
-#ifdef USE_FONT_4X6
-   extern const UG_FONT FONT_4X6;
-#endif
-#ifdef USE_FONT_5X8
-   extern const UG_FONT FONT_5X8;
-#endif
-#ifdef USE_FONT_5X12
-   extern const UG_FONT FONT_5X12;
-#endif
-#ifdef USE_FONT_6X8
-   extern const UG_FONT FONT_6X8;
-#endif
-#ifdef USE_FONT_6X10
-   extern const UG_FONT FONT_6X10;
-#endif
-#ifdef USE_FONT_7X12
-   extern const UG_FONT FONT_7X12;
-#endif
-#ifdef USE_FONT_8X8
-   extern const UG_FONT FONT_8X8;
-#endif
-#ifdef USE_FONT_8X12
-   extern const UG_FONT FONT_8X12;
-#endif
-#ifdef USE_FONT_8X12_CYRILLIC
-   extern const UG_FONT FONT_8X12;
-#endif
-#ifdef USE_FONT_8X14
-   extern const UG_FONT FONT_8X14;
-#endif
-#ifdef USE_FONT_10X16
-   extern const UG_FONT FONT_10X16;
-#endif
-#ifdef USE_FONT_12X16
-   extern const UG_FONT FONT_12X16;
-#endif
-#ifdef USE_FONT_12X20
-   extern const UG_FONT FONT_12X20;
-#endif
-#ifdef USE_FONT_16X26
-   extern const UG_FONT FONT_16X26;
-#endif
-#ifdef USE_FONT_22X36
-   extern const UG_FONT FONT_22X36;
-#endif
-#ifdef USE_FONT_24X40
-   extern const UG_FONT FONT_24X40;
-#endif
-#ifdef USE_FONT_32X53
-   extern const UG_FONT FONT_32X53;
-#endif
-
-/* -------------------------------------------------------------------------------- */
-/* -- TYPEDEFS                                                                   -- */
-/* -------------------------------------------------------------------------------- */
-typedef struct S_OBJECT                               UG_OBJECT;
-typedef struct S_WINDOW                               UG_WINDOW;
-typedef UG_S8                                         UG_RESULT;
-#ifdef USE_COLOR_RGB888
-typedef UG_U32                                        UG_COLOR;
-#endif
-#ifdef USE_COLOR_RGB565
-typedef UG_U16                                        UG_COLOR;
-#endif
-/* -------------------------------------------------------------------------------- */
 /* -- DEFINES                                                                    -- */
 /* -------------------------------------------------------------------------------- */
 #ifndef NULL
-   #define NULL ((void*) 0)
+#define NULL ((void*) 0)
 #endif
 
 /* Alignments */
@@ -160,6 +65,53 @@ typedef UG_U16                                        UG_COLOR;
 #define OBJ_ID_17                                     17
 #define OBJ_ID_18                                     18
 #define OBJ_ID_19                                     19
+
+
+/* -------------------------------------------------------------------------------- */
+/* -- µGUI FONTS                                                                 -- */
+/* -- Source: http://www.mikrocontroller.net/user/show/benedikt                  -- */
+/* -------------------------------------------------------------------------------- */
+typedef enum
+{
+	FONT_TYPE_1BPP,
+	FONT_TYPE_8BPP,
+    FONT_TYPE_VECTOR_1BPP 
+} FONT_TYPE;
+
+#ifdef USE_FONT_VECTOR_CYRILLIC
+typedef struct
+{
+   const char *p[256];
+   UG_S16 char_code_width;
+   UG_S16 char_code_height;
+} UG_VECT_FONT;
+#endif
+
+typedef struct
+{
+   unsigned char* p;
+   FONT_TYPE font_type;
+   UG_S16 char_width;
+   UG_S16 char_height;
+   UG_U16 start_char;
+   UG_U16 end_char;
+   UG_U8  *widths;
+} UG_FONT;
+
+#include "ugui_fontList.h"
+
+/* -------------------------------------------------------------------------------- */
+/* -- TYPEDEFS                                                                   -- */
+/* -------------------------------------------------------------------------------- */
+typedef struct S_OBJECT                               UG_OBJECT;
+typedef struct S_WINDOW                               UG_WINDOW;
+typedef UG_S8                                         UG_RESULT;
+#ifdef USE_COLOR_RGB888
+typedef UG_U32                                        UG_COLOR;
+#endif
+#ifdef USE_COLOR_RGB565
+typedef UG_U16                                        UG_COLOR;
+#endif
 
 /* -------------------------------------------------------------------------------- */
 /* -- FUNCTION RESULTS                                                           -- */
