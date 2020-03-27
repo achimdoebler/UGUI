@@ -19,7 +19,7 @@ extern const UG_FONT FONT_7X12;
 #ifdef USE_FONT_8X8
 extern const UG_FONT FONT_8X8;
 #endif
-#if defined (USE_FONT_8X12) || defined (USE_FONT_8X12_CYRILLIC)
+#if defined(USE_FONT_8X12) || defined(USE_FONT_8X12_CYRILLIC)
 extern const UG_FONT FONT_8X12;
 #endif
 #ifdef USE_FONT_8X14
