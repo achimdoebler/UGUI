@@ -113,7 +113,7 @@ typedef struct
  */
 typedef struct S_OBJECT UG_OBJECT;
 typedef struct S_WINDOW UG_WINDOW;
-typedef UG_S8 UG_RESULT;
+typedef UG_U8 UG_RESULT;
 #ifdef USE_COLOR_RGB888
 typedef UG_U32 UG_COLOR;
 #endif
